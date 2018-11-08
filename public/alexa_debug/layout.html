@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+
+  <title>i_am=Alexa-SAGE2 Communication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS Libraries / jquery must come before bootstrap-->
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+  <!-- CSS Source -->
+  <link rel="stylesheet" href="./main.css" />
+
+  <!-- JS Libraries -->
+  <script src="bootstrap.min.js"></script>
+
+  <!-- JS Source -->
+  <script src="chat_ui.js"></script>
+
+</head>
+
+
+
+
+<body>
+  <div class="container-fluid">
+    <!-- Title Information, perhaps add tooltip here -->
+    <div class="row">
+      <div id="titleText">Alexa-Articulate</div>
+    </div>
+
+    <!-- Main content: includes chat, history, pointer information, apps, skeleton -->
+    <div class="row">
+      <div class="col-md-5">
+        <div class="chat_box">
+          <div class="fixed-panel">
+            <div class="divTitles"> Chat Box </div>
+
+          </div>
+
+
+        </div>
+        <div class="type_message">
+          <div class="divTitles"> Chat Data (#messages and runtime) </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="connection_box">
+          <div class="divTitles"> Connection to lambda, sage, and sending to sage </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="pointer_box">
+          <div class="divTitles"> Pointer information </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="error_box">
+          <div class="divTitles"> Error information </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="history_box">
+          <div class="divTitles"> History information </div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <!-- ##########################################################   -->
+  <!-- ##########################################################   -->
+  <!-- Sending to SAGE2 stuff. I.e. Backend stuff. ~Vijayraj Mahida -->
+  <!-- ##########################################################   -->
+  <!-- ##########################################################   -->
+  <script type="text/javascript" src="https://hopper.evl.uic.edu/src/websocket.io.js"></script>
+  <script async="" src="https://hopper.evl.uic.edu/lib/webix/webix.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  <script>
+    /* To be placed later in html
+    <div class="row">
+      <div class="panel panel-primary">
+            <div class="panel-body fixed-panel">
+              <section class="chat" ng-app="chat" ng-controller="chatController">
+                <!--Messages-->
+                <section class="messages clearfix">
+
+                  <div ng-repeat="message in messages" class="{{message.from}}">
+                    <p>{{message.text}}</p>
+                  </div>
+
+
+                </section>
+                <!--Footer-->
+                <section class="footer clearfix">
+                  <input type="text" id="message-input" class="message-input" ng-model="chatText" ng-enter="triggerSubmit()" />
+                  <span ng-click="addMessage()">Send</span>
+                </section>
+              </section>
+            </div>
+      </div>
+    </div>
+    */
+    var final_transcript = "";
+    var socket = io();
+    // if (socket == undefined) { socket = io(); }
+    socket.on('spokenMSG', function(msg) {
+      //alert('spokenMSG = ', JSON.stringify(msg));
+      final_transcript = msg;
+      document.getElementById('input').innerHTML = msg;
+      sendToSage();
+    });
+
+    var wsio;
+    wsio = new WebsocketIO('wss://hopper.evl.uic.edu');
+
+    wsio.open(function() {
+      console.log("Websocket opened");
+
+      setupListeners();
+
+      var clientDescription = {
+        clientType: "articulateUI",
+        requests: {
+          config: false,
+          version: false,
+          time: false,
+          console: false
+        }
+        // },
+        // browser: __SAGE2__.browser
+      };
+
+      wsio.emit('addClient', clientDescription);
+    });
+
+    // socket close event (i.e. server crashed)
+    wsio.on('close', function(evt) {
+      // show a popup for a long time
+      showMessage("Server offline", 2147483647);
+      // try to reload every few seconds
+      var refresh = setInterval(function() {
+        reloadIfServerRunning(function() {
+          clearInterval(refresh);
+        });
+      }, 2000);
+    });
+
+    function init() {
+      console.log("init");
+
+    }
+
+    function setupListeners() {
+      wsio.on('initialize', function(data) {
+        //interactor.setInteractionId(data.UID);
+
+      });
+
+      // Open a popup on message sent from server
+      wsio.on('errorMessage', showMessage);
+
+      // Server sends the SAGE2 version
+      wsio.on('setupSAGE2Version', function(data) {
+        sage2Version = data;
+        console.log('SAGE2: version', data.base, data.branch, data.commit, data.date);
+      });
+    }
+    //---------------------------------------------------------------
+    // Show error message for 2 seconds (or time given as parameter)
+    function showMessage(message, delay) {
+      var aMessage = webix.alert({
+        type: "alert-error",
+        title: "SAGE2 Error",
+        ok: "OK",
+        text: message
+      });
+      setTimeout(function() {
+        webix.modalbox.hide(aMessage);
+      }, delay ? delay : 2000);
+    }
+
+    function sendToSage() {
+      var n = final_transcript.indexOf('\n');
+      if (n < 0 || n >= 80) {
+        n = 40 + final_transcript.substring(40).indexOf(' ');
+      }
+      // var subject = encodeURI(final_transcript.substring(0, n));
+      // var body = encodeURI(final_transcript.substring(n + 1));
+      // window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+      console.log("send to sage! ", final_transcript);
+      //send to sage here!
+      wsio.emit("alexaVoiceSpeechInput", {
+        text: final_transcript
+      });
+    }
+
+    /**
+     * Reload the page if server reloads
+     *
+     * @method reloadIfServerRunning
+     * @param callback {Function} function to call
+     */
+    function reloadIfServerRunning(callback) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/", true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log("server ready");
+          // when server ready, callback
+          callback();
+          // and reload the page
+          window.location.reload();
+        }
+      };
+      xhr.send();
+    }
+  </script>
+</body>
+
+</html>

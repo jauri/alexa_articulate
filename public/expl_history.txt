@@ -1,0 +1,25 @@
+Relevant Information in history (in terms of importance):
+-commandText (What you said)
+
+-commandProcessed (What was processed)
+
+-mostOccurantItems (most pointed to apps in order)
+	-mostOccurant (most pointed to app) X Becomes obselete
+
+-gesturesDetected (registered gestures during command)
+
+-Timestamp (may need to clean up)
+
+Chat Data:
+-Number of messages sent
+-Number of successful commands
+
+****Have Articulate send out command not recognized if not recognized?
+
+Relevant Pointer Information:
+-id (Pointer ID)
+-color (Color)
+-left (Left)
+-top (Top)
+-sourceType (Source Type)
+-lastUsed (Last Updated)

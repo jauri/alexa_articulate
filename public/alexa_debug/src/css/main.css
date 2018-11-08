@@ -1,0 +1,476 @@
+#reqTxt {
+  color: white;
+}
+
+#resTxt {
+  color: white;
+}
+
+#pointerInfo {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em 0.2em 0.1em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+#pointerID {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 0.1em 0.2em 0.3em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+#pointerColor {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 0.1em 0.2em 0.3em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+#pointerLeft {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 0.1em 0.2em 0.3em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+#pointerTop {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 0.1em 0.2em 0.3em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+#pointerSource {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 0.1em 0.2em 0.3em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+#pointerTime {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 0.1em 0.2em 0.3em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+
+#errorTxt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+
+#chatTxt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+
+#titleText {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  color: white;
+  font-size: 225%;
+  text-align: center;
+  font-weight: bold;
+}
+
+#inputTxt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+
+#ledTxt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+
+#cMsg {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  text-align: center;
+  margin: 1em;
+  font-size: 80%;
+  color: white;
+}
+
+#txt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  text-align: center;
+  margin: 1em;
+  font-size: 60%;
+  color: white;
+}
+
+#sCommands {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  text-align: center;
+  margin: 1em;
+  font-size: 60%;
+  color: white;
+}
+
+#aCommands {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  text-align: center;
+  margin: 1em;
+  font-size: 60%;
+  color: white;
+}
+
+.lT {
+  /* margin-left: 40px; */
+  background: grey;
+}
+
+#lTxt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  font-weight: bold;
+  width: auto;
+  height: auto;
+  color: #1C2541;
+}
+.sT {
+  /* margin-left: 10px; */
+  background: grey;
+  border-left: #1c2541 5px solid;
+  border-right: #1c2541 5px solid;
+}
+#sTxt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  font-weight: bold;
+  color: #1C2541;
+}
+
+.snT {
+  /* margin-left: 10px; */
+  background: grey;
+}
+#snTxt {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  font-weight: bold;
+  color: #1C2541;
+}
+
+#datagram {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 1em;
+  font-size: 60%;
+  text-align: center;
+  color: white;
+}
+
+.divTitles {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 90%;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.chat_box {
+  border: 5px solid #3A506B;
+  display: table;
+  margin:1em 0.05em 0em;
+  width: 100%;
+  height: 580px;
+}
+
+.connection_box {
+  border: 5px solid #3A506B;
+  display: table;
+  margin:1em 0.1em 0.05em;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.error_box {
+  border: 5px solid #3A506B;
+  display: table;
+  margin:1em 0.1em 0.05em;
+  width: 100%;
+  height: 180px;
+}
+
+.type_message {
+  border: 5px solid #3A506B;
+  display: table;
+  margin:1em 0.1em 0.05em;
+  width: 100%;
+  height: 160px;
+}
+
+.history_box {
+  border: 5px solid #3A506B;
+  display: table;
+  margin:1em 0.05em 0.5em;
+  width: 100%;
+  height: 370px;
+}
+
+.pointer_box {
+  border: 5px solid #3A506B;
+  display: table;
+  margin:1em 0.05em 0.5em;
+  width: 100%;
+  height: 190px;
+}
+/* ================================================================================== */
+
+/* For input-output stuff from Alexa-Articulate */
+*{
+  font-family:"Roboto";
+  font-size:20px;
+}
+body{
+  background:#fafafa;
+}
+#wrapper{
+  width:60%;
+  margin:auto auto;
+  margin-top:50px;
+}
+#input{
+  width:100%;
+  height:40vh;
+  border:none;
+  background:none;
+  outline:none;
+}
+span {
+  font-variant: small-caps;
+  color: rgb(3, 171, 171);
+}
+
+/* ================================================================================== */
+#messages { list-style-type: none; margin: 0; padding: 0; color: #1C2541; font-weight: bold;}
+#messages li { padding: 5px 10px; }
+#messages li:nth-child(odd) { background: #6FFFE9; }
+#messages li:nth-child(even) { background: #5BC0BE; }
+#messages { margin-bottom: 40px }
+
+
+#connections { list-style-type: none; margin: 0; padding: 0; text-align: center;}
+#connections li { padding: 5px 10px; }
+#connections { margin-bottom: 10px }
+
+#history { list-style-type: none; margin: 0; padding: 0; color: #1C2541; font-weight: bold;}
+#history li { padding: 5px 10px; }
+#msg1 { background: #5BC0BE; }
+#msg2 { background: #6FFFE9; }
+#history { margin-bottom: 40px }
+
+#initalMsg { background: #6FFFE9; }
+
+/* Stylized chat app information */
+/* Clearfix */
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+html, body {
+    font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 400;
+    color: #000;
+    height: 100%;
+    background: #0B132B;
+}
+
+html a, body a {
+    text-decoration: none;
+    color: #000;
+}
+
+html p, body p {
+    line-height: 1.3em;
+}
+
+.chat {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/*Header*/
+.header {
+    height: 70px;
+    left: 8px;
+    right: 8px;
+    border-bottom: 1px solid #e6e6e6;
+    position: fixed;
+    background-color: whitesmoke;
+    z-index: 1000;
+}
+
+/* .header .back, .header .username, .header .contacts {
+    width: 33.3333%;
+    float: left;
+    text-align: center;
+}
+
+.header .back > a, .header .username > a, .header .contacts > a {
+    padding: 1.6em 0;
+    display: block;
+}
+
+.header .back > h1, .header .username > h1, .header .contacts > h1 {
+    padding: 0.4em 0;
+} */
+
+/* Messages */
+.messages {
+    padding-top: 90px;
+}
+
+.message-remote {
+    position: relative;
+    max-width: 45%;
+    padding: 5px 10px;
+    margin: 1em 2em;
+    color: white;
+    background: #3498DB;
+    border-radius: 25px;
+    float: right;
+    clear: both;
+}
+
+.message-remote:before {
+    content: ' ';
+    height: 0;
+    position: absolute;
+    width: 0;
+    border: .6em solid transparent;
+    /* arrow size */
+    border-left-color: #3498DB;
+    /* arrow color */
+    /* positioning */
+    position: absolute;
+    bottom: 15px;
+    right: -1em;
+}
+
+.message-local {
+    position: relative;
+    max-width: 45%;
+    padding: 5px 10px;
+    margin: 0.3em 2em;
+    color: white;
+    background: #26A65B;
+    border-radius: 25px;
+    float: left;
+    clear: both;
+}
+
+.message-local:before {
+    content: ' ';
+    height: 0;
+    position: absolute;
+    width: 0;
+    border: .6em solid transparent;
+    /* arrow size */
+    border-right-color: #26A65B;
+    /* arrow color */
+    /* positioning */
+    position: absolute;
+    bottom: 15px;
+    left: -1em;
+}
+
+.footer {
+    border-top: 1px solid #e6e6e6;
+    height: 70px;
+    background-color: whitesmoke;
+    z-index: 1000;
+}
+
+.footer .message-input {
+    width: 75%;
+    margin: 0.5em 0.5em 0.5em 0;
+    height: 20px;
+    padding: 1em 1em 1em 0;
+    border: 1px solid #e6e6e6;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+.footer span {
+    font-size: 20px;
+    font-weight: 400;
+    float: right;
+    margin: 1.2em 1em 0 0;
+    cursor: pointer;
+}
+
+@media (max-width: 580px) {
+    .footer .message-input {
+        width: 60%;
+    }
+}
+
+/* ================================================================================== */
+
+.fixed-panel {
+  /*min-height: 10px;*/
+  max-width: 600px;
+  max-height: 531px;
+  overflow-y: scroll;
+}
+
+.fixed-panel-history {
+  /*min-height: 10px;*/
+  max-width: 600px;
+  max-height: 320px;
+  overflow-y: scroll;
+}
+
+/* From https://css-tricks.com/almanac/properties/s/scrollbar/ */
+.fixed-panel::-webkit-scrollbar {
+    width: 5px;
+}
+
+.fixed-panel::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.fixed-panel::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.fixed-panel-history::-webkit-scrollbar {
+    width: 5px;
+}
+
+.fixed-panel-history::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.fixed-panel-history::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
