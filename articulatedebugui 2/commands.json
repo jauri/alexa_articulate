@@ -1,0 +1,20 @@
+{
+  "ACs": [
+    "close this window",
+    "maximize this window",
+    "restore this window",
+    "center this window",
+    "move this window to the right",
+    "move this window to the left",
+    "move this window up",
+    "move this window down",
+    "close these windows",
+    "double this window",
+    "move this window here",
+    "partition these windows",
+    "tile windows",
+    "minimize these windows",
+    "tile these windows",
+    "tile"
+  ]
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+
+  <title>Alexa-Articulate Commands Station</title>
+  <link rel="icon" href="src/img/Logo.png" type="image/gif" sizes="16x16">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS Libraries / jquery must come before bootstrap-->
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+  <!-- CSS Source -->
+  <link rel="stylesheet" href="./src/css/main.css" />
+  <link rel="stylesheet" href="src/css/style.css">
+  <link rel="stylesheet" href="src/css/led.css">
+  <link rel="stylesheet" href="src/css/spinner.css">
+
+
+  <!-- JS Libraries -->
+  <script src="lib/js/bootstrap.min.js"></script>
+
+  <!-- JS Source -->
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- Title Information, perhaps add tooltip here -->
+    <div class="row">
+      <div id="titleText">Alexa-Articulate</div>
+    </div>
+
+    <!-- Main content: includes chat, history, pointer information, errors, connnection info -->
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="connection_box row">
+
+            <div class="divTitles"> Connections </div>
+            <div class="row"></div>
+            <div class="row">
+              <div class="lT col-md-4">
+                <div id="lTxt"> Lambda </div>
+              </div>
+              <div class="sT col-md-4">
+                <div id="sTxt"> SAGE2 </div>
+              </div>
+              <div class="snT col-md-4">
+                <div id="snTxt"> Sending </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div id="cMsg"> </div>
+
+              <!-- obtained from: https://codepen.io/robinwilkie/pen/ORLYdA  -->
+              <div id="spinnerWrapper">
+                <div id="spinner1">
+                  <div id="spinner2">
+                    <div id="spinner3">
+                      <div id="spinner4">
+                        <div id="spinner5"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+        </div>
+
+        <div class="error_box row">
+
+            <div class="divTitles"> Error information </div>
+            <div id="errorTxt"> No errors yet. </div>
+
+        </div>
+
+        <div class="type_message row">
+
+            <div class="divTitles"> Spoken Commands Summary </div>
+            <div id="sCommands">  Successful Commands = 0</div>
+            <div id="aCommands"> Total Commands = 0 </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="chat_box">
+          <div class="divTitles"> Spoken Commands </div>
+          <div class="fixed-panel">
+            <div id="messages"> </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="history_box">
+          <div class="divTitles"> History information </div>
+          <div class="fixed-panel-history">
+            <div id="history"> </div>
+          </div>
+        </div>
+
+        <div class="pointer_box">
+          <div class="divTitles"> Pointer information </div>
+          <div id="pointer0">  </div>
+          <div id="pointer1"> </div>
+          <div id="pointer2"> </div>
+          <div id="pointer3"> </div>
+          <div id="pointer4">  </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+  <!-- ##########################################################   -->
+  <!-- ##########################################################   -->
+  <!-- Sending to SAGE2 stuff. I.e. Backend stuff. ~Vijayraj Mahida -->
+  <!-- ##########################################################   -->
+  <!-- ##########################################################   -->
+  <script type="text/javascript" src="https://hopper.evl.uic.edu/src/websocket.io.js"></script>
+  <script async="" src="https://hopper.evl.uic.edu/lib/webix/webix.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  <script>
+    var final_transcript = "";
+    var socket = io();
+    var sCom = 0;
+    var aCom = 0;
+
+    initialMessages();
+
+    // if (socket == undefined) { socket = io(); }
+    socket.on('spokenMSG', function(msg) {
+      //alert('spokenMSG = ', JSON.stringify(msg));
+      final_transcript = msg;
+      if (msg) {
+        //document.getElementById('inputTxt').innerHTML = msg;
+        $('#messages').prepend($('<li>').text('You said: ' + msg));
+        window.scrollTo(0, document.body.scrollHeight);
+
+        aCom++;
+        document.getElementById('aCommands').innerHTML = 'Total Commands = ' + aCom;
+      }
+      sendToSage();
+    });
+
+    function initialMessages(){
+      $('#messages').prepend($('<li id="initalMsg">').text('Nothing sent to Alexa yet.'));
+      window.scrollTo(0, document.body.scrollHeight);
+
+      $('#history').prepend($('<li id="initalMsg">').text('No commands sent yet.'));
+      window.scrollTo(0, document.body.scrollHeight);
+
+      document.getElementById('lTxt').style.backgroundColor = "#16d97e";
+      document.getElementById('sTxt').style.backgroundColor = "red";
+      document.getElementById('snTxt').style.backgroundColor = "yellow";
+
+      document.getElementById('cMsg').innerHTML = "Attempting to connect to SAGE2...";
+
+    }
+
+    var wsio;
+    wsio = new WebsocketIO('wss://hopper.evl.uic.edu');
+
+    wsio.open(function() {
+      console.log("Websocket opened");
+      document.getElementById('sTxt').style.backgroundColor = "#16d97e";
+      document.getElementById('cMsg').innerHTML = "System Online. Awaiting Commands.";
+      document.getElementById('spinnerWrapper').style.visibility = "visible";
+
+      setupListeners();
+
+      var clientDescription = {
+        clientType: "articulateUI",
+        requests: {
+          config: false,
+          version: false,
+          time: false,
+          console: false
+        }
+        // },
+        // browser: __SAGE2__.browser
+      };
+
+      wsio.emit('addClient', clientDescription);
+    });
+
+    // socket close event (i.e. server crashed)
+    wsio.on('close', function(evt) {
+      // show a popup for a long time
+      showMessage("Server offline", 2147483647);
+      // try to reload every few seconds
+      var refresh = setInterval(function() {
+        reloadIfServerRunning(function() {
+          clearInterval(refresh);
+        });
+      }, 2000);
+    });
+
+    function init() {
+      console.log("init");
+
+    }
+    var msg = 'msg1';
+
+    function setupListeners() {
+      wsio.on('initialize', function(data) {
+        //interactor.setInteractionId(data.UID);
+      });
+
+      // Open a popup on message sent from server
+      wsio.on('errorMessage', showMessage);
+
+      // Server sends the SAGE2 version
+      wsio.on('setupSAGE2Version', function(data) {
+        sage2Version = data;
+        console.log('SAGE2: version', data.base, data.branch, data.commit, data.date);
+      });
+
+      wsio.on('articulateDebugInfo', function(data) {
+        console.log('articulateDebugInfo = ' + JSON.stringify(data));
+
+        $('#history').prepend($('<li id="' + msg +  '">').text('Time Stamp: ' + JSON.stringify(data.timestamp)));
+        $('#history').prepend($('<li id="' + msg +  '">').text('Gestures Recognized: ' + JSON.stringify(data.gesturesDetected)));
+        $('#history').prepend($('<li id="' + msg +  '">').text('Most pointed to apps (descending): ' + JSON.stringify(data.mostOccurantItems)));
+        $('#history').prepend($('<li id="' + msg +  '">').text('Processed Command: ' + JSON.stringify(data.commandProcessed)));
+        $('#history').prepend($('<li id="' + msg +  '">').text('Heard Command: ' + data.commandText));
+
+
+        if (msg === 'msg1'){
+          msg = 'msg2';
+        }
+        else {
+          msg = 'msg1';
+        }
+
+        console.log(JSON.stringify(data.commandProcessed));
+        if (!jQuery.isEmptyObject(data.commandProcessed)) {
+          sCom++;
+          document.getElementById('sCommands').innerHTML = 'Successful Commands = ' + sCom;
+        }
+
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      wsio.on('pointerPosition', function(data) {
+        console.log('pointingGesturePosition = ' + JSON.stringify(data));
+        var i = 0;
+        for (key in data)
+        {
+          document.getElementById('pointer'+ i).innerHTML = JSON.stringify(data[key].id) + "- X:" +JSON.stringify(Math.floor(data[key].left)) + " Y: " + JSON.stringify(Math.floor(data[key].top));
+          document.getElementById('pointer'+ i).style.color = data[key].color;
+          i++;
+          if(i > 4)
+          {
+            break;
+          }
+        }
+        for (i; i < 5; i++ )
+        {
+          document.getElementById('pointer'+ i ).innerHTML = '';
+        }
+        // var key = Object.keys(data)[0];
+        // if (key)
+        // {
+        // document.getElementById('pointerID').innerHTML = 'Pointer ID = ' + JSON.stringify(data[key].id);
+        // document.getElementById('pointerColor').innerHTML = 'Color = ' + JSON.stringify(data[key].color);
+        // document.getElementById('pointerLeft').innerHTML = 'Left = ' + JSON.stringify(data[key].left);
+        // document.getElementById('pointerTop').innerHTML = 'Top = ' + JSON.stringify(data[key].top);
+        // document.getElementById('pointerSource').innerHTML = 'Source = ' + JSON.stringify(data[key].sourceType);
+        // document.getElementById('pointerTime').innerHTML = 'Last Used = ' + JSON.stringify(data[key].lastUsed);
+        // }
+      });
+    }
+    //---------------------------------------------------------------
+    // Show error message for 2 seconds (or time given as parameter)
+    function showMessage(message, delay) {
+      var aMessage = webix.alert({
+        type: "alert-error",
+        title: "SAGE2 Error",
+        ok: "OK",
+        text: message
+      });
+      setTimeout(function() {
+        webix.modalbox.hide(aMessage);
+      }, delay ? delay : 2000);
+    }
+
+    function sendToSage() {
+      var n = final_transcript.indexOf('\n');
+      if (n < 0 || n >= 80) {
+        n = 40 + final_transcript.substring(40).indexOf(' ');
+      }
+      // var subject = encodeURI(final_transcript.substring(0, n));
+      // var body = encodeURI(final_transcript.substring(n + 1));
+      // window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+      console.log("send to sage! ", final_transcript);
+      //send to sage here!
+      wsio.emit("alexaVoiceSpeechInput", {
+        text: final_transcript
+      });
+    }
+
+    /**
+     * Reload the page if server reloads
+     *
+     * @method reloadIfServerRunning
+     * @param callback {Function} function to call
+     */
+    function reloadIfServerRunning(callback) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/", true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log("server ready");
+          // when server ready, callback
+          callback();
+          // and reload the page
+          window.location.reload();
+        }
+      };
+      xhr.send();
+    }
+  </script>
+</body>
+
+</html>

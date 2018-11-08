@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+
+  <title>Big Brother</title>
+  <link rel="icon" href="src/img/Logo.png" type="image/gif" sizes="16x16">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS Libraries / jquery must come before bootstrap-->
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+  <!-- CSS Source -->
+  <link rel="stylesheet" href="./src/css/main.css" />
+  <link rel="stylesheet" href="src/css/style.css">
+
+
+  <!-- JS Libraries -->
+  <script src="lib/js/bootstrap.min.js"></script>
+  <script src="lib/js/annyang.min.js"></script>
+
+  <!-- JS Source -->
+
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="container-fluid">
+      <!-- Title Information, perhaps add tooltip here -->
+      <div class="row">
+        <div id="titleText">Continuous Listening Mode</div>
+      </div>
+
+      <!-- Main content: includes chat, history, pointer information, errors, connnection info -->
+      <div class="row">
+        <div id="messages"> </div>
+      </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script>
+    // save to file: https://gist.github.com/Arahnoid/9925725
+    var socket = io();
+
+      if (annyang) {
+        // Let's define a command.
+        var commands = {
+          'input': function() {
+            socket.emit('input');
+          },
+          'output': function() {
+            socket.emit('output');
+          },
+          'trifacto': function() {
+            alert('trifacto was heard');
+          }
+        };
+
+        // Add our commands to annyang
+        annyang.addCommands(commands);
+
+        // Start listening.
+        annyang.start();
+        annyang.debug();
+
+        colorMsg = 'msg1';
+
+        annyang.addCallback('result', function(userSaid) {
+          var timestamp = new Date();
+          var obj = {};
+          obj[timestamp.toString()] = userSaid;
+          socket.emit('speechToText', obj);
+          for (var i = 0; i < userSaid.length; i++) {
+            $('#messages').prepend($('<li id="' + colorMsg + '">').text(timestamp + ':  ' + userSaid[i]));
+            if (i === userSaid.length - 1) {
+              if (colorMsg === 'msg1') {
+                colorMsg = 'msg2';
+              } else {
+                colorMsg = 'msg1';
+              }
+            }
+          }
+        });
+      }
+    </script>
+
+  </div>
+</body>
+</html>
